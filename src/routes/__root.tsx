@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   createRootRoute,
   HeadContent,
@@ -11,13 +12,22 @@ export const Route = createRootRoute({
     <>
       <HeadContent />
       <div className="p-2 flex gap-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>{" "}
-        <Link to="/about" className="[&.active]:font-bold">
-          About
-        </Link>
-        <Link to={"/app"}>Dashboard</Link>
+        <Button asChild>
+          <Link to="/" className="[&.active]:bg-gray-800">
+            Home
+          </Link>
+        </Button>
+        <Button asChild>
+          <Link to="/about" className="[&.active]:bg-gray-800">
+            About
+          </Link>
+        </Button>
+
+        <Button asChild>
+          <Link to="/app" className="[&.active]:bg-gray-800">
+            Dashboard
+          </Link>
+        </Button>
       </div>
       <hr />
       <Outlet />
