@@ -16,7 +16,7 @@ function RouteComponent() {
             <li>Dashboard</li>
           </Link>
           <Link to="/app/inbox">
-            <li>Notes</li>
+            <li>Inbox</li>
           </Link>
         </ul>
       </nav>

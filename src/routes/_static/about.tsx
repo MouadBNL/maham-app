@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/app/inbox")({
+export const Route = createFileRoute("/_static/about")({
   component: RouteComponent,
   head: () => ({
-    meta: [{ title: "Maham App | Notes" }],
+    meta: [{ title: "Maham App | About" }],
   }),
 });
 
 function RouteComponent() {
-  return <div>Inbox!</div>;
+  return <div>Page In Progress...</div>;
 }

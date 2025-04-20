@@ -11,20 +11,15 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
 import { Route as PathlessLayoutImport } from './routes/_pathlessLayout'
 import { Route as AppRouteImport } from './routes/app/route'
-import { Route as IndexImport } from './routes/index'
+import { Route as StaticRouteImport } from './routes/_static/route'
 import { Route as AppIndexImport } from './routes/app/index'
+import { Route as StaticIndexImport } from './routes/_static/index'
 import { Route as AppInboxImport } from './routes/app/inbox'
+import { Route as StaticAboutImport } from './routes/_static/about'
 
 // Create/Update Routes
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const PathlessLayoutRoute = PathlessLayoutImport.update({
   id: '/_pathlessLayout',
@@ -37,9 +32,8 @@ const AppRouteRoute = AppRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const StaticRouteRoute = StaticRouteImport.update({
+  id: '/_static',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -49,21 +43,33 @@ const AppIndexRoute = AppIndexImport.update({
   getParentRoute: () => AppRouteRoute,
 } as any)
 
+const StaticIndexRoute = StaticIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StaticRouteRoute,
+} as any)
+
 const AppInboxRoute = AppInboxImport.update({
   id: '/inbox',
   path: '/inbox',
   getParentRoute: () => AppRouteRoute,
 } as any)
 
+const StaticAboutRoute = StaticAboutImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => StaticRouteRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+    '/_static': {
+      id: '/_static'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof StaticRouteImport
       parentRoute: typeof rootRoute
     }
     '/app': {
@@ -80,12 +86,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PathlessLayoutImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
+    '/_static/about': {
+      id: '/_static/about'
       path: '/about'
       fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof StaticAboutImport
+      parentRoute: typeof StaticRouteImport
     }
     '/app/inbox': {
       id: '/app/inbox'
@@ -93,6 +99,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/inbox'
       preLoaderRoute: typeof AppInboxImport
       parentRoute: typeof AppRouteImport
+    }
+    '/_static/': {
+      id: '/_static/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof StaticIndexImport
+      parentRoute: typeof StaticRouteImport
     }
     '/app/': {
       id: '/app/'
@@ -105,6 +118,20 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
+
+interface StaticRouteRouteChildren {
+  StaticAboutRoute: typeof StaticAboutRoute
+  StaticIndexRoute: typeof StaticIndexRoute
+}
+
+const StaticRouteRouteChildren: StaticRouteRouteChildren = {
+  StaticAboutRoute: StaticAboutRoute,
+  StaticIndexRoute: StaticIndexRoute,
+}
+
+const StaticRouteRouteWithChildren = StaticRouteRoute._addFileChildren(
+  StaticRouteRouteChildren,
+)
 
 interface AppRouteRouteChildren {
   AppInboxRoute: typeof AppInboxRoute
@@ -121,60 +148,60 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/app': typeof AppRouteRouteWithChildren
   '': typeof PathlessLayoutRoute
-  '/about': typeof AboutRoute
+  '/app': typeof AppRouteRouteWithChildren
+  '/about': typeof StaticAboutRoute
   '/app/inbox': typeof AppInboxRoute
+  '/': typeof StaticIndexRoute
   '/app/': typeof AppIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '': typeof PathlessLayoutRoute
-  '/about': typeof AboutRoute
+  '/about': typeof StaticAboutRoute
   '/app/inbox': typeof AppInboxRoute
+  '/': typeof StaticIndexRoute
   '/app': typeof AppIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/_static': typeof StaticRouteRouteWithChildren
   '/app': typeof AppRouteRouteWithChildren
   '/_pathlessLayout': typeof PathlessLayoutRoute
-  '/about': typeof AboutRoute
+  '/_static/about': typeof StaticAboutRoute
   '/app/inbox': typeof AppInboxRoute
+  '/_static/': typeof StaticIndexRoute
   '/app/': typeof AppIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '' | '/about' | '/app/inbox' | '/app/'
+  fullPaths: '' | '/app' | '/about' | '/app/inbox' | '/' | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/about' | '/app/inbox' | '/app'
+  to: '' | '/about' | '/app/inbox' | '/' | '/app'
   id:
     | '__root__'
-    | '/'
+    | '/_static'
     | '/app'
     | '/_pathlessLayout'
-    | '/about'
+    | '/_static/about'
     | '/app/inbox'
+    | '/_static/'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  StaticRouteRoute: typeof StaticRouteRouteWithChildren
   AppRouteRoute: typeof AppRouteRouteWithChildren
   PathlessLayoutRoute: typeof PathlessLayoutRoute
-  AboutRoute: typeof AboutRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  StaticRouteRoute: StaticRouteRouteWithChildren,
   AppRouteRoute: AppRouteRouteWithChildren,
   PathlessLayoutRoute: PathlessLayoutRoute,
-  AboutRoute: AboutRoute,
 }
 
 export const routeTree = rootRoute
@@ -187,14 +214,17 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
+        "/_static",
         "/app",
-        "/_pathlessLayout",
-        "/about"
+        "/_pathlessLayout"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_static": {
+      "filePath": "_static/route.tsx",
+      "children": [
+        "/_static/about",
+        "/_static/"
+      ]
     },
     "/app": {
       "filePath": "app/route.tsx",
@@ -206,12 +236,17 @@ export const routeTree = rootRoute
     "/_pathlessLayout": {
       "filePath": "_pathlessLayout.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/_static/about": {
+      "filePath": "_static/about.tsx",
+      "parent": "/_static"
     },
     "/app/inbox": {
       "filePath": "app/inbox.tsx",
       "parent": "/app"
+    },
+    "/_static/": {
+      "filePath": "_static/index.tsx",
+      "parent": "/_static"
     },
     "/app/": {
       "filePath": "app/index.tsx",
