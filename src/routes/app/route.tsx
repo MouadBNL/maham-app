@@ -1,4 +1,6 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import AppSidebar from "@/components/blocks/AppSidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/app")({
   component: RouteComponent,
@@ -9,18 +11,11 @@ export const Route = createFileRoute("/app")({
 
 function RouteComponent() {
   return (
-    <main style={{ width: "80%", margin: "auto" }}>
-      <nav>
-        <ul>
-          <Link to="/app">
-            <li>Dashboard</li>
-          </Link>
-          <Link to="/app/inbox">
-            <li>Inbox</li>
-          </Link>
-        </ul>
-      </nav>
-      <Outlet />
-    </main>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset className="w-full h-full">
+        <Outlet />
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
