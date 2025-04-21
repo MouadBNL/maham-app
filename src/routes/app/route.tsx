@@ -13,7 +13,7 @@ function RouteComponent() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="w-full h-full">
+      <SidebarInset className="h-full w-full">
         <Outlet />
       </SidebarInset>
     </SidebarProvider>

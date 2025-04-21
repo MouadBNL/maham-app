@@ -53,7 +53,7 @@ class MahamDB extends Dexie {
 
   async updateTask(
     id: string,
-    task: Partial<Omit<DEX_Task, "id" | "created_at" | "updated_at">>
+    task: Partial<Omit<DEX_Task, "id" | "created_at" | "updated_at">>,
   ) {
     await this.tasks.update(id, {
       ...task,

@@ -65,7 +65,7 @@ function RouteComponent() {
             project.tasks.map((task) => (
               <div key={task.id} className="py-1">
                 {editingId == task.id ? (
-                  <div className="border rounded p-2">
+                  <div className="rounded border p-2">
                     <TaskForm
                       task={{
                         id: task.id,
@@ -104,19 +104,19 @@ function RouteComponent() {
             ))}
 
           {editingId == "NEW" ? (
-            <div className="border rounded p-2 mt-2">
+            <div className="mt-2 rounded border p-2">
               <TaskForm
                 onSubmit={onTaskCreate}
                 onCancel={() => setEditingId(null)}
               />
             </div>
           ) : (
-            <div className="py-2 px-4 ">
+            <div className="px-4 py-2">
               <span
                 onClick={() => {
                   setEditingId("NEW");
                 }}
-                className="flex items-center justify-start text-sm gap-2 text-muted-foreground hover:text-accent-foreground   cursor-pointer"
+                className="text-muted-foreground hover:text-accent-foreground flex cursor-pointer items-center justify-start gap-2 text-sm"
               >
                 <PlusIcon size={14} />
                 Add Task

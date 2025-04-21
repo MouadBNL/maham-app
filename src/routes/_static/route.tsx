@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_static")({
 function RouteComponent() {
   return (
     <>
-      <div className="p-2 flex gap-2">
+      <div className="flex gap-2 p-2">
         <Button asChild>
           <Link to="/" className="[&.active]:bg-gray-800">
             Home
