@@ -18,6 +18,7 @@ import { Route as AppIndexImport } from './routes/app/index'
 import { Route as StaticIndexImport } from './routes/_static/index'
 import { Route as AppInboxImport } from './routes/app/inbox'
 import { Route as StaticAboutImport } from './routes/_static/about'
+import { Route as AppProjectsSlugImport } from './routes/app/projects/$slug'
 
 // Create/Update Routes
 
@@ -59,6 +60,12 @@ const StaticAboutRoute = StaticAboutImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => StaticRouteRoute,
+} as any)
+
+const AppProjectsSlugRoute = AppProjectsSlugImport.update({
+  id: '/projects/$slug',
+  path: '/projects/$slug',
+  getParentRoute: () => AppRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -114,6 +121,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexImport
       parentRoute: typeof AppRouteImport
     }
+    '/app/projects/$slug': {
+      id: '/app/projects/$slug'
+      path: '/projects/$slug'
+      fullPath: '/app/projects/$slug'
+      preLoaderRoute: typeof AppProjectsSlugImport
+      parentRoute: typeof AppRouteImport
+    }
   }
 }
 
@@ -136,11 +150,13 @@ const StaticRouteRouteWithChildren = StaticRouteRoute._addFileChildren(
 interface AppRouteRouteChildren {
   AppInboxRoute: typeof AppInboxRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppProjectsSlugRoute: typeof AppProjectsSlugRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppInboxRoute: AppInboxRoute,
   AppIndexRoute: AppIndexRoute,
+  AppProjectsSlugRoute: AppProjectsSlugRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
@@ -154,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/app/inbox': typeof AppInboxRoute
   '/': typeof StaticIndexRoute
   '/app/': typeof AppIndexRoute
+  '/app/projects/$slug': typeof AppProjectsSlugRoute
 }
 
 export interface FileRoutesByTo {
@@ -162,6 +179,7 @@ export interface FileRoutesByTo {
   '/app/inbox': typeof AppInboxRoute
   '/': typeof StaticIndexRoute
   '/app': typeof AppIndexRoute
+  '/app/projects/$slug': typeof AppProjectsSlugRoute
 }
 
 export interface FileRoutesById {
@@ -173,13 +191,21 @@ export interface FileRoutesById {
   '/app/inbox': typeof AppInboxRoute
   '/_static/': typeof StaticIndexRoute
   '/app/': typeof AppIndexRoute
+  '/app/projects/$slug': typeof AppProjectsSlugRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/app' | '/about' | '/app/inbox' | '/' | '/app/'
+  fullPaths:
+    | ''
+    | '/app'
+    | '/about'
+    | '/app/inbox'
+    | '/'
+    | '/app/'
+    | '/app/projects/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/about' | '/app/inbox' | '/' | '/app'
+  to: '' | '/about' | '/app/inbox' | '/' | '/app' | '/app/projects/$slug'
   id:
     | '__root__'
     | '/_static'
@@ -189,6 +215,7 @@ export interface FileRouteTypes {
     | '/app/inbox'
     | '/_static/'
     | '/app/'
+    | '/app/projects/$slug'
   fileRoutesById: FileRoutesById
 }
 
@@ -230,7 +257,8 @@ export const routeTree = rootRoute
       "filePath": "app/route.tsx",
       "children": [
         "/app/inbox",
-        "/app/"
+        "/app/",
+        "/app/projects/$slug"
       ]
     },
     "/_pathlessLayout": {
@@ -250,6 +278,10 @@ export const routeTree = rootRoute
     },
     "/app/": {
       "filePath": "app/index.tsx",
+      "parent": "/app"
+    },
+    "/app/projects/$slug": {
+      "filePath": "app/projects/$slug.tsx",
       "parent": "/app"
     }
   }
