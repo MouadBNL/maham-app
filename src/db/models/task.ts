@@ -1,14 +1,16 @@
 import { z } from "zod";
+import AbstractDBModel from "./model";
 
-export const taskSchema = z.object({
+export const TaskSchema = z.object({
   id: z.string().optional(),
   project_id: z.string().optional().nullable(),
   title: z.string().min(1, { message: "The task title is required" }),
   due_at: z.date(),
-  priority: z.enum(["low", "medium", "high"]).nullable(),
+  // priority: z.enum(["low", "medium", "high"]).nullable(),
   completed_at: z.date().nullable(),
   created_at: z.date().optional(),
   updated_at: z.date().optional(),
 });
 
-export type ITask = z.infer<typeof taskSchema>;
+// export interface Task extends AbstractDBModel, z.infer<typeof TaskSchema> {}
+export type Task = AbstractDBModel & z.infer<typeof TaskSchema>;

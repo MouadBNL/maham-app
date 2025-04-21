@@ -9,7 +9,7 @@ import { ITask } from "@/validators";
 import { createFileRoute } from "@tanstack/react-router";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useInbox } from "@/services/useInbox";
 
 export const Route = createFileRoute("/app/inbox")({
   component: RouteComponent,
@@ -19,17 +19,16 @@ export const Route = createFileRoute("/app/inbox")({
 });
 
 function RouteComponent() {
-  const tasks = useLiveQuery(() => dxdb.getTasks());
-
+  const tasks = useInbox();
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  const onTaskCreate = async (task: ITask) => {
-    await dxdb.createTask({
-      title: task.task,
-      due_at: task.dueDate,
-    });
-    setEditingId(null);
-  };
+  const taskCreate = useTaskCreate({
+    onSuccess() {
+      setEditingId("NEW");
+    },
+  });
+
+  const taskDelete = useTaskDelete();
 
   const onTaskCompletedAtChange = async (id: string, isCompleted: boolean) => {
     await dxdb.updateTask(id, {
@@ -89,10 +88,10 @@ function RouteComponent() {
                     </TaskItem.Details>
                     <TaskItem.Actions>
                       <TaskItem.ActionEdit
-                        onClick={() => setEditingId(task.id)}
+                        onClick={() => setEditingId(task.id!)}
                       />
                       <TaskItem.ActionDelete
-                        onClick={() => onTaskDelete(task.id)}
+                        onClick={() => taskDelete.mutate(task.id!)}
                       />
                     </TaskItem.Actions>
                   </TaskItem>
@@ -103,7 +102,7 @@ function RouteComponent() {
           {editingId == "NEW" ? (
             <div className="mt-2 rounded border p-2">
               <TaskForm
-                onSubmit={onTaskCreate}
+                onSubmit={taskCreate.mutateAsync}
                 onCancel={() => setEditingId(null)}
               />
             </div>

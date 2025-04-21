@@ -12,30 +12,30 @@ import {
   SelectValue,
 } from "../ui/select";
 import { XIcon } from "lucide-react";
-import { taskSchema, type ITask } from "@/validators";
 import { DateTimePicker } from "../ui/date-time-picker";
+import { Task, TaskSchema } from "@/db/models";
 
 export default function TaskForm({
   onSubmit,
   onCancel,
   task,
 }: {
-  onSubmit: (data: ITask) => void;
+  onSubmit: (data: Task) => void;
   onCancel?: () => void;
-  task?: ITask;
+  task?: Task;
 }) {
-  const form = useForm<ITask>({
-    resolver: zodResolver(taskSchema),
+  const form = useForm<Task>({
+    resolver: zodResolver(TaskSchema),
     defaultValues: {
-      task: "",
-      dueDate: new Date(),
-      completedAt: null,
-      priority: null,
+      title: "",
+      due_at: new Date(),
+      completed_at: null,
+      // priority: null,
       ...task,
     },
   });
 
-  const handleSubmit = async (data: ITask) => {
+  const handleSubmit = async (data: Task) => {
     await onSubmit(data);
   };
 
@@ -50,7 +50,7 @@ export default function TaskForm({
         )} */}
         <FormField
           control={form.control}
-          name="task"
+          name="title"
           render={({ field }) => (
             <FormItem>
               {/* <FormLabel>Task</FormLabel> */}
@@ -65,7 +65,7 @@ export default function TaskForm({
           <div className="flex gap-4">
             <FormField
               control={form.control}
-              name="dueDate"
+              name="due_at"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -75,7 +75,7 @@ export default function TaskForm({
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="priority"
               render={({ field }) => (
@@ -108,7 +108,7 @@ export default function TaskForm({
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <div className="flex items-center justify-end gap-4">
             <Button
