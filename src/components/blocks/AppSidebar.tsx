@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import {
   Sidebar,
   SidebarContent,
@@ -36,6 +36,7 @@ import { useDialog } from "../ui/alert-dialog";
 
 export default function AppSidebar() {
   const dialog = useDialog();
+  const router = useRouter();
   const projects = useLiveQuery(() => dxdb.getProjects());
 
   const onProjectDelete = async (id: string) => {
@@ -45,6 +46,16 @@ export default function AppSidebar() {
         "Deleting this project means that all of its tasks will be deleted. Do you want to continue ?",
       onContinueClick: async () => {
         try {
+          const project = projects?.find((e) => e.id == id);
+          if (!project) return true;
+          if (
+            router.matchRoute({
+              to: "/app/projects/$slug",
+              params: { slug: project.slug },
+            })
+          ) {
+            router.navigate({ to: "/app/inbox" });
+          }
           await dxdb.deleteProject(id);
           return true;
         } catch (error) {

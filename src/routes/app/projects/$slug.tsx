@@ -12,7 +12,7 @@ import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/app/projects/$slug")({
-  component: RouteComponent,  
+  component: RouteComponent,
 });
 
 function RouteComponent() {
