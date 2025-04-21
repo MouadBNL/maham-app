@@ -32,12 +32,26 @@ import {
 import { ReactNode, useState } from "react";
 import ProjectForm from "./ProjectForm";
 import { IProject } from "@/validators";
+import { useDialog } from "../ui/alert-dialog";
 
 export default function AppSidebar() {
+  const dialog = useDialog();
   const projects = useLiveQuery(() => dxdb.getProjects());
 
   const onProjectDelete = async (id: string) => {
-    await dxdb.deleteProject(id);
+    dialog.alert({
+      title: "Are you sure you want to delete this project ?",
+      description:
+        "Deleting this project means that all of its tasks will be deleted. Do you want to continue ?",
+      onContinueClick: async () => {
+        try {
+          await dxdb.deleteProject(id);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      },
+    });
   };
 
   return (
