@@ -19,10 +19,8 @@ export default function TaskCreateContainer({
       onError(error, variables, context) {
         toast.error("Could not create task");
       },
-      onSettled: () => {
-        
-      }
+      onSettled: () => {},
     });
   };
-  return <TaskForm onSubmit={onSubmit} onCancel={() => setEditingId(null)} />;
+  return <TaskForm onSubmit={onSubmit} onCancel={onFinished} />;
 }
