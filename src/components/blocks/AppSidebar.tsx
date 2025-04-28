@@ -13,7 +13,6 @@ import {
 import { ArrowUpCircleIcon, PlusIcon, EllipsisIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useLiveQuery } from "dexie-react-hooks";
-import { DEX_Project, dxdb } from "@/db";
 
 import {
   DropdownMenu,
@@ -31,13 +30,14 @@ import {
 } from "../ui/dialog";
 import { ReactNode, useState } from "react";
 import ProjectForm from "./ProjectForm";
-import { IProject } from "@/validators";
 import { useDialog } from "../ui/alert-dialog";
+import ProjectRepository from "@/db/repositories/ProjectRepository";
+import { Project } from "@/db/models";
 
 export default function AppSidebar() {
   const dialog = useDialog();
   const router = useRouter();
-  const projects = useLiveQuery(() => dxdb.getProjects());
+  const projects = useLiveQuery(() => ProjectRepository.list());
 
   const onProjectDelete = async (id: string) => {
     dialog.alert({
@@ -51,12 +51,12 @@ export default function AppSidebar() {
           if (
             router.matchRoute({
               to: "/app/projects/$slug",
-              params: { slug: project.slug },
+              params: { slug: project.slug! },
             })
           ) {
             router.navigate({ to: "/app/inbox" });
           }
-          await dxdb.deleteProject(id);
+          await ProjectRepository.delete(id);
           return true;
         } catch (error) {
           return false;
@@ -124,7 +124,7 @@ export default function AppSidebar() {
 }
 
 export type ProjectItemProps = {
-  project: DEX_Project;
+  project: Project;
   onDelete?: (id: string) => void;
 };
 function ProjectItem({ project, onDelete }: ProjectItemProps) {
@@ -132,7 +132,7 @@ function ProjectItem({ project, onDelete }: ProjectItemProps) {
     <SidebarMenuItem key={project.id}>
       <div className="group/project-item relative">
         <SidebarMenuButton asChild>
-          <Link to="/app/projects/$slug" params={{ slug: project.slug }}>
+          <Link to="/app/projects/$slug" params={{ slug: project.slug! }}>
             {project.name}
           </Link>
         </SidebarMenuButton>
@@ -158,10 +158,8 @@ function ProjectItem({ project, onDelete }: ProjectItemProps) {
 function ProjectCreateModal({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
 
-  const onCreate = (project: IProject) => {
-    dxdb.createProject({
-      name: project.name,
-    });
+  const onCreate = (project: Project) => {
+    ProjectRepository.save(project);
     setOpen(false);
   };
   return (

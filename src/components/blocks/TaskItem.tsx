@@ -1,7 +1,7 @@
-import React, { type PropsWithChildren } from "react";
+import React, { ReactNode, useState, type PropsWithChildren } from "react";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
-import { EditIcon, XIcon } from "lucide-react";
+import { EditIcon, PlusIcon, XIcon } from "lucide-react";
 
 export default function TaskItem({ children }: React.PropsWithChildren) {
   return (
@@ -84,5 +84,30 @@ TaskItem.ActionEdit = function ActionEdit({
     >
       <EditIcon className="h-4 w-4" />
     </Button>
+  );
+};
+
+TaskItem.InlineCreate = function InlineCreate({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [isCreating, setIsCreating] = useState(false);
+  return (
+    <>
+      {isCreating ? (
+        <div className="mt-2 rounded border p-2">{children}</div>
+      ) : (
+        <div className="px-4 py-2">
+          <span
+            onClick={() => setIsCreating(true)}
+            className="text-muted-foreground hover:text-accent-foreground flex cursor-pointer items-center justify-start gap-2 text-sm"
+          >
+            <PlusIcon size={14} />
+            Add Task
+          </span>
+        </div>
+      )}
+    </>
   );
 };

@@ -49,6 +49,7 @@ export default class Repository<T extends AbstractDBModel> {
       updated_at: new Date(),
     } as any;
     this.table.update(entity.id, item);
+    return this.find(entity.id);
   }
 
   async delete(id: string): Promise<void> {

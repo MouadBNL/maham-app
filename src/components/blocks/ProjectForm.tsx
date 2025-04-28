@@ -11,18 +11,19 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IProject, ProjectSchema } from "@/validators";
+import { ProjectSchema } from "@/validators";
+import { Project } from "@/db/models";
 
 export default function ProjectForm({
   onSubmit,
   onCancel,
   project,
 }: {
-  onSubmit: (data: IProject) => void;
+  onSubmit: (data: Project) => void;
   onCancel?: () => void;
-  project?: IProject;
+  project?: Project;
 }) {
-  const form = useForm<IProject>({
+  const form = useForm<Project>({
     resolver: zodResolver(ProjectSchema),
     defaultValues: {
       name: "",
@@ -30,7 +31,7 @@ export default function ProjectForm({
     },
   });
 
-  const handleSubmit = async (data: IProject) => {
+  const handleSubmit = async (data: Project) => {
     await onSubmit(data);
   };
 

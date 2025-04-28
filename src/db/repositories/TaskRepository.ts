@@ -8,7 +8,9 @@ class TaskRepository extends Repository<Task> {
   }
 
   async byProject(project_id: string | null) {
-    return await this.search({ project_id });
+    const data = await this.list();
+
+    return data.filter((e) => e.project_id == project_id);
   }
 }
 

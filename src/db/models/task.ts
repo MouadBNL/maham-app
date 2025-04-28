@@ -12,5 +12,4 @@ export const TaskSchema = z.object({
   updated_at: z.date().optional(),
 });
 
-// export interface Task extends AbstractDBModel, z.infer<typeof TaskSchema> {}
 export type Task = AbstractDBModel & z.infer<typeof TaskSchema>;

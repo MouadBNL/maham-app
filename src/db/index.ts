@@ -1,6 +1,7 @@
 import Dexie, { Table } from "dexie";
 import { Project, Task } from "./models";
 
+// &:
 export class MahamDB extends Dexie {
   tasks!: Table<Task, string>;
   projects!: Table<Project, string>;

@@ -179,7 +179,6 @@ function AlertDialogProvider({ children }: { children: React.ReactNode }) {
     alert(props) {
       setState(props);
       setOpen(true);
-      console.log();
     },
   };
   return (

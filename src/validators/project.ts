@@ -5,4 +5,3 @@ export const ProjectSchema = z.object({
   name: z.string().min(3).max(255),
 });
 
-export type IProject = z.infer<typeof ProjectSchema>;

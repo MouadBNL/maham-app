@@ -10,5 +10,3 @@ export const taskSchema = z.object({
   created_at: z.date().optional(),
   updated_at: z.date().optional(),
 });
-
-export type ITask = z.infer<typeof taskSchema>;

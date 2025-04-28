@@ -1,11 +1,11 @@
 import { PropsWithChildren } from "react";
-import AppContainer from "./AppContainer";
+import AppContent from "./AppContent";
 
 export default function AppHeader({ children }: PropsWithChildren) {
   return (
-    <AppContainer>
+    <AppContent>
       <div className="h-16"></div>
       {children}
-    </AppContainer>
+    </AppContent>
   );
 }

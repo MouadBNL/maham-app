@@ -4,14 +4,14 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { XIcon } from "lucide-react";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "../ui/select";
+// import { XIcon } from "lucide-react";
 import { DateTimePicker } from "../ui/date-time-picker";
 import { Task, TaskSchema } from "@/db/models";
 
@@ -22,7 +22,7 @@ export default function TaskForm({
 }: {
   onSubmit: (data: Task) => void;
   onCancel?: () => void;
-  task?: Task;
+  task?: Partial<Task>;
 }) {
   const form = useForm<Task>({
     resolver: zodResolver(TaskSchema),
@@ -55,7 +55,7 @@ export default function TaskForm({
             <FormItem>
               {/* <FormLabel>Task</FormLabel> */}
               <FormControl>
-                <Input placeholder="Enter your task" {...field} />
+                <Input placeholder="Enter your task" {...field} autoFocus />
               </FormControl>
             </FormItem>
           )}
