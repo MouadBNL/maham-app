@@ -12,6 +12,17 @@ class TaskRepository extends Repository<Task> {
 
     return data.filter((e) => e.project_id == project_id);
   }
+
+  async byProjectAndSection(
+    project_id: string | null,
+    section_id: string | null,
+  ) {
+    const data = await this.list();
+
+    return data.filter(
+      (e) => e.project_id == project_id && e.section_id == section_id,
+    );
+  }
 }
 
 export default new TaskRepository();
