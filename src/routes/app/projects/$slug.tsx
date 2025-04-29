@@ -1,6 +1,7 @@
 import AppContent from "@/components/blocks/AppContent";
 import AppHeader from "@/components/blocks/AppHeader";
 import TasksContainer from "@/components/containers/TasksContainer";
+import EditableText from "@/components/ui/editabel-text";
 import { Heading2 } from "@/components/ui/typography";
 import ProjectRepository from "@/db/repositories/ProjectRepository";
 import { createFileRoute } from "@tanstack/react-router";
@@ -15,12 +16,18 @@ function RouteComponent() {
   const project = useLiveQuery(() => {
     return ProjectRepository.show(slug);
   }, [slug]);
-  if (!project) return;
+  if (!project) return; 
+
+  const updateProjectName = async (name: string) => {
+    ProjectRepository.update({ ...project, name: name });
+  };
 
   return (
     <>
       <AppHeader>
-        <Heading2>{project?.name}</Heading2>
+        <Heading2>
+          <EditableText text={project?.name} onChange={updateProjectName} />
+        </Heading2>
       </AppHeader>
       <AppContent>
         <TasksContainer projectId={project.id!} key={slug} />

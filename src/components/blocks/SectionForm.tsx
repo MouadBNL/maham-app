@@ -18,6 +18,7 @@ export default function SectionForm({
     resolver: zodResolver(SectionSchema),
     defaultValues: {
       name: "",
+      expanded: true,   
       ...section,
     },
   });

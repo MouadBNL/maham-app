@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import EditableText from "../ui/editabel-text";
 
 export default function SectionContent({
   projectId,
@@ -29,8 +30,12 @@ export default function SectionContent({
     await SectionRepository.update({ ...section, expanded: !section.expanded });
   };
 
-  const onDeleteSection = async () => {
+  const onDeleteSection = async () => { 
     await SectionRepository.delete(section.id!);
+  };
+
+  const updateSectionName = async (name: string) => {
+    await SectionRepository.update({ ...section, name: name });
   };
 
   const count = tasks?.filter((e) => !e.completed_at).length;
@@ -47,7 +52,9 @@ export default function SectionContent({
             <ChevronRight />
           </Button>
         )}
-        <span className="text-sm font-semibold">{section.name}</span>
+        <span className="text-sm font-semibold">
+          <EditableText text={section.name} onChange={updateSectionName} />
+        </span>
         <span className="text-xs opacity-35">{count}</span>
         <div className="ml-auto">
           <DropdownMenu>
