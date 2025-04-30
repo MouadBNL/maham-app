@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
+    "@milkdown/crepe": "7.6.2",
+    "@milkdown/kit": "7.6.2",
+    "@milkdown/react": "7.6.2",
     "@radix-ui/react-alert-dialog": "^1.1.10",
     "@radix-ui/react-checkbox": "^1.2.2",
     "@radix-ui/react-dialog": "^1.1.10",
